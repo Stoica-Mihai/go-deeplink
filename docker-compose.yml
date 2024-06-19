@@ -1,0 +1,20 @@
+version: '1.0'
+
+services:
+  go:
+    container_name: deeplink
+    build: image/.
+    tty: true
+    ports:
+      - 9000:9000
+    volumes:
+      - ./:/app
+    networks:
+      default:
+        ipv4_address: 192.168.40.69
+
+networks:
+  default:
+    ipam:
+      config:
+        - subnet: "192.168.40.0/24"
