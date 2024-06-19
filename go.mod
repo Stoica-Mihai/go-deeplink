@@ -1,3 +1,3 @@
-module go-url-shortner
+module go-deeplink
 
-go 1.22.4
+go 1.22
