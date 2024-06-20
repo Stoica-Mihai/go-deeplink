@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"go-deeplink/router"
+	"go-deeplink/backend/router"
 	"net/http"
 )
 
