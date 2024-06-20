@@ -17,7 +17,7 @@ func main() {
 	})
 
 	router.HandleFunc("GET /link/{id}", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Println("creating dynamic link")
+		fmt.Println("getting dynamic link info")
 	})
 
 	router.HandleFunc("DELETE /link/{id}", func(w http.ResponseWriter, r *http.Request) {
