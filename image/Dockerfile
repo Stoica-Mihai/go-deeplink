@@ -1,6 +1,9 @@
 FROM alpine:latest
 LABEL author "github.com/Stoica-Mihai"
 
+# Add curl
+RUN apk add curl
+
 # Set up the working directory
 WORKDIR /tmp
 
