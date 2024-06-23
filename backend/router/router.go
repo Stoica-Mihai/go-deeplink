@@ -1,9 +1,13 @@
 package router
 
-import "net/http"
+import (
+	"go-deeplink/backend/utils"
+	"net/http"
+)
 
-func GetRouter() *http.ServeMux {
+func GetRouter() http.Handler {
 	router := http.NewServeMux()
+	routerLogging := utils.LoggingMiddleware(router)
 
 	router.HandleFunc("GET /", Index)
 
@@ -13,5 +17,5 @@ func GetRouter() *http.ServeMux {
 
 	router.HandleFunc("DELETE /link/{id}", DeleteLink)
 
-	return router
+	return routerLogging
 }
