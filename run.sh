@@ -2,6 +2,6 @@
 set -e
 compileDir=$(mktemp)
 
-go build -o "$compileDir" ./app
+go build -o "$compileDir" ./backend
 
 exec "$compileDir"
