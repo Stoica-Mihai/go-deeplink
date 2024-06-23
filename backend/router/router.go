@@ -9,7 +9,7 @@ func GetRouter() http.Handler {
 	router := http.NewServeMux()
 	routerLogging := utils.LoggingMiddleware(router)
 
-	router.HandleFunc("GET /", Index)
+	router.Handle("/", FileServer)
 
 	router.HandleFunc("POST /create", CreateLink)
 
