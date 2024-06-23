@@ -15,13 +15,10 @@ RUN wget -q https://go.dev/dl/$GONAME
 RUN tar -C /usr/local -xzf $GONAME
 
 # Set up PATH
-ENV PATH=$PATH:/usr/local/go/bin:/root/go/bin
+ENV PATH=$PATH:/usr/local/go/bin
 
 # Set working dir
 WORKDIR /app
 
 # Install GO dependecies
 # RUN go mod download
-
-# Install air for live reload
-RUN go install github.com/air-verse/air@latest
