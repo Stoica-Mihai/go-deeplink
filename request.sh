@@ -36,5 +36,9 @@ case "$1" in
 	;;
     "unhandled")
         curl -X GET $homeAddr/random/unhandled/link
-	exit 0
+	;;
+    *)
+        echo "Unhandled command: $1. Please check help by running ./request.sh"
+	;;
 esac
+exit 0
