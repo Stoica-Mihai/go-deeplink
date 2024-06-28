@@ -1,8 +1,8 @@
 package main
 
 import (
-	"fmt"
 	"go-deeplink/backend/router"
+	"log"
 	"net/http"
 )
 
@@ -23,10 +23,12 @@ func (s *Service) IPAndPort() string {
 }
 
 func (s *Service) Run(logging bool) {
-	fmt.Printf("Listen on http://%s\n", s.IPAndPort())
+	log.Printf("Listen on http://%s\n", s.IPAndPort())
 	var router http.Handler = s.Router
-	if logging {
+	if logging && s.Logging != nil {
 		router = s.Logging(s.Router)
+	} else {
+		log.Println("Logging could not be enabled due to the service not having a logging middleware")
 	}
 	http.ListenAndServe(s.IPAndPort(), router)
 }
