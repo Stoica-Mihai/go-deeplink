@@ -3,32 +3,71 @@ package router
 import (
 	"go-deeplink/backend/utils"
 	"net/http"
+	"net/url"
+	"strings"
 
 	"github.com/labstack/echo/v4"
+	"golang.org/x/net/publicsuffix"
 )
 
-type Response struct {
+type CreateLinkResponse struct {
 	Deeplink utils.Deeplink `json:"deeplink"`
 	Redirect string         `json:"redirect"`
 }
 
-func CreateLinkHandler(c echo.Context) error {
-	CheckHeaders(c)
-
-	response := new(Response)
-
-	if err := c.Bind(response); err != nil {
-		return c.String(http.StatusBadRequest, "400 - Malformed request body")
-	}
-
-	response.Deeplink = utils.GenerateDeepLink()
-
-	return c.JSON(http.StatusOK, response)
+type CreateLinkError struct {
+	Status  int    `json:"status"`
+	Message string `json:"message"`
 }
 
-func CheckHeaders(c echo.Context) error {
-	if c.Request().Header.Get("Content-Type") != "application/json" {
-		return c.String(http.StatusBadRequest, "400 - Missing or invalid Content-Type header\n")
+const JSONCONTENTTYPE = "application/json"
+
+func CreateLinkHandler(c echo.Context) error {
+
+	if c.Request().Header.Get("Content-Type") != JSONCONTENTTYPE {
+		return c.JSON(http.StatusBadRequest, &CreateLinkError{
+			Status:  http.StatusBadRequest,
+			Message: "Missing or invalid Content-Type header",
+		})
 	}
-	return nil
+
+	createLinkResponse := &CreateLinkResponse{}
+
+	if err := c.Bind(createLinkResponse); err != nil {
+		return c.JSON(http.StatusBadRequest, &CreateLinkError{
+			Status:  http.StatusBadRequest,
+			Message: "Malformed request body",
+		})
+	}
+
+	if !isValidURL(createLinkResponse.Redirect) {
+		return c.JSON(http.StatusBadRequest, &CreateLinkError{
+			Status:  http.StatusBadRequest,
+			Message: "Url is not valid",
+		})
+	}
+
+	createLinkResponse.Deeplink = utils.GenerateDeepLink()
+
+	return c.JSON(http.StatusOK, createLinkResponse)
+}
+
+func isValidURL(urlStr string) bool {
+	if !strings.HasPrefix(urlStr, "http://") ||
+		!strings.HasPrefix(urlStr, "https://") ||
+		!strings.HasPrefix(urlStr, "www.") {
+		urlStr = "http://" + urlStr
+	}
+
+	_, err := url.Parse(urlStr)
+
+	if err != nil {
+		return false
+	}
+
+	if _, ok := publicsuffix.PublicSuffix(urlStr); !ok {
+		return false
+	}
+
+	return true
 }
