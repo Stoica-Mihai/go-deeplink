@@ -10,13 +10,15 @@ const (
 	DEEPLINKSIZE = 15
 )
 
-func GenerateDeepLink() string {
+type Deeplink string
 
-	var result string
+func GenerateDeepLink() Deeplink {
+
+	var result Deeplink
 
 	for DEEPLINKSIZE != len(result) {
 		index := rand.Intn(CHARSETLEN)
-		result += string(CHARSET[index])
+		result += Deeplink(CHARSET[index])
 	}
 
 	return result

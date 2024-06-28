@@ -2,9 +2,12 @@ package router
 
 import (
 	"fmt"
-	"net/http"
+
+	"github.com/labstack/echo/v4"
 )
 
-func DeleteLink(w http.ResponseWriter, r *http.Request) {
+func DeleteLink(c echo.Context) error {
 	fmt.Println("Deleting link")
+
+	return nil
 }

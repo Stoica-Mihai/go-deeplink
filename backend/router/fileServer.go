@@ -4,4 +4,4 @@ import (
 	"net/http"
 )
 
-var FileServer = http.FileServer(http.Dir(STATICPATH))
+var FileServer = http.FileServer(http.Dir("/app/frontend/static/"))

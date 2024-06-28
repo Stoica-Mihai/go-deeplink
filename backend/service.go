@@ -3,7 +3,9 @@ package main
 import (
 	"go-deeplink/backend/router"
 	"log"
-	"net/http"
+
+	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 )
 
 const (
@@ -14,8 +16,17 @@ const (
 type Service struct {
 	IP      string
 	Port    string
-	Router  *http.ServeMux
-	Logging func(http.Handler) http.Handler
+	Router  *echo.Echo
+	Logging echo.MiddlewareFunc
+}
+
+func NewService() *Service {
+	return &Service{
+		IP:      IP,
+		Port:    PORT,
+		Router:  router.GetRouter(),
+		Logging: LoggingMiddleware(),
+	}
 }
 
 func (s *Service) IPAndPort() string {
@@ -24,20 +35,14 @@ func (s *Service) IPAndPort() string {
 
 func (s *Service) Run(logging bool) {
 	log.Printf("Listen on http://%s\n", s.IPAndPort())
-	var router http.Handler = s.Router
-	if logging && s.Logging != nil {
-		router = s.Logging(s.Router)
-	} else {
-		log.Println("Logging could not be enabled due to the service not having a logging middleware")
+	if logging {
+		s.Router.Use(s.Logging)
 	}
-	http.ListenAndServe(s.IPAndPort(), router)
+	s.Router.Logger.Fatal(s.Router.Start(s.IPAndPort()))
 }
 
-func NewService() *Service {
-	return &Service{
-		IP:      IP,
-		Port:    PORT,
-		Router:  router.GetRouter(),
-		Logging: router.LoggingMiddleware,
-	}
+func LoggingMiddleware() echo.MiddlewareFunc {
+	return middleware.LoggerWithConfig(middleware.LoggerConfig{
+		Format: "${time_rfc3339} [${method}] ${uri} ${status}\n",
+	})
 }

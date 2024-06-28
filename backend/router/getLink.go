@@ -2,9 +2,12 @@ package router
 
 import (
 	"fmt"
-	"net/http"
+
+	"github.com/labstack/echo/v4"
 )
 
-func GetLinkInfo(w http.ResponseWriter, r *http.Request) {
+func GetLinkInfo(c echo.Context) error {
 	fmt.Println("Getting link info")
+
+	return nil
 }

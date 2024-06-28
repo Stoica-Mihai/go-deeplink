@@ -13,6 +13,9 @@ fi
 homeAddr="http://0.0.0.0:9000"
 
 case "$1" in
+    "index")
+	curl -X GET $homeAddr/
+	;;
     "create")
         curl -X POST $homeAddr/create
 	;;
