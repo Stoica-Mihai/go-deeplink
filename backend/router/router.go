@@ -3,13 +3,21 @@ package router
 import (
 	"log"
 	"net/http"
+	"path"
 )
+
+const FRONTENDPATH = "/app/frontend"
+
+var STATICPATH = path.Join(FRONTENDPATH, "static")
+var VIEWSPATH = path.Join(FRONTENDPATH, "views")
 
 func GetRouter() *http.ServeMux {
 	router := http.NewServeMux()
-	// routerLogging := utils.LoggingMiddleware(router)
 
-	router.Handle("/", FileServer)
+	router.HandleFunc("/", GetView("main.html"))
+	router.HandleFunc("/stats", GetView("stats.html"))
+
+	router.Handle("/static", FileServer)
 
 	router.HandleFunc("POST /create", CreateLink)
 
