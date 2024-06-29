@@ -17,15 +17,17 @@ const (
 	JSONCONTENTTYPE = "application/json"
 )
 
-type CreateLinkResponse struct {
-	Deeplink string `json:"deeplink"`
-	Redirect string `json:"redirect"`
-}
+type (
+	CreateLinkResponse struct {
+		Deeplink string `json:"deeplink"`
+		Redirect string `json:"redirect"`
+	}
 
-type CreateLinkError struct {
-	Status  int    `json:"status"`
-	Message string `json:"message"`
-}
+	CreateLinkError struct {
+		Status  int    `json:"status"`
+		Message string `json:"message"`
+	}
+)
 
 func CreateLinkHandler(c echo.Context) error {
 
