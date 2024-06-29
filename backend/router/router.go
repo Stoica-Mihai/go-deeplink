@@ -9,13 +9,33 @@ const FRONTENDPATH = "/app/frontend/"
 const STATICPATH = FRONTENDPATH + "static/"
 const VIEWSPATH = FRONTENDPATH + "views/"
 
-func GetRouter() *echo.Echo {
-	router := echo.New()
-	router.HideBanner = true
+type (
+	Router struct {
+		*echo.Echo
+	}
 
-	t := NewTemplate(VIEWSPATH + "*.html")
+	RouterConfig struct {
+		HideBanner bool
+		Renderer   *Template
+	}
+)
 
-	router.Renderer = t
+func NewRouter(config *RouterConfig) *Router {
+	router := &Router{
+		Echo: echo.New(),
+	}
+
+	router.HideBanner = config.HideBanner
+	router.Renderer = config.Renderer
+
+	return router
+}
+
+func GetRouter() *Router {
+	router := NewRouter(&RouterConfig{
+		HideBanner: true,
+		Renderer:   NewTemplate(VIEWSPATH + "*.html"),
+	})
 
 	router.Static("/static", STATICPATH)
 

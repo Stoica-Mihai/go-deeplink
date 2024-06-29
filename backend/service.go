@@ -16,7 +16,7 @@ const (
 type Service struct {
 	IP      string
 	Port    string
-	Router  *echo.Echo
+	Router  *router.Router
 	Logging echo.MiddlewareFunc
 }
 
