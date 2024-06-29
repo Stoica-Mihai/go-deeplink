@@ -7,10 +7,8 @@ RUN apk add curl
 # Set up the working directory
 WORKDIR /tmp
 
-# Set up GO file name
-ENV GONAME=go1.22.4.linux-amd64.tar.gz
-
 # Download and install GO
+ARG GONAME=go1.22.4.linux-amd64.tar.gz
 RUN wget -q https://go.dev/dl/$GONAME
 RUN tar -C /usr/local -xzf $GONAME
 

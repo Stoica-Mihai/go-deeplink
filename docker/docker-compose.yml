@@ -3,18 +3,31 @@ version: '1.0'
 services:
   go:
     container_name: deeplink
-    build: image/.
+    build: .
     tty: true
     ports:
       - 9000:9000
     volumes:
-      - ./:/app
+      - ../:/app
+    env_file:
+      - ../.env
     networks:
       default:
         ipv4_address: 192.168.40.69
+  mongodb:
+    container_name: mongodb
+    image: mongo
+    restart: always
+    ports:
+      - 27017:27017
+    env_file:
+      - ../.env
+    networks:
+      default:
+        ipv4_address: 192.168.40.70
 
 networks:
   default:
     ipam:
       config:
-        - subnet: "192.168.40.0/24"
+        - subnet: 192.168.40.0/24
