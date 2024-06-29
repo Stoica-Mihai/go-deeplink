@@ -11,9 +11,9 @@ type Template struct {
 	templates *template.Template
 }
 
-func NewTemplate(template *template.Template) *Template {
+func NewTemplate(path string) *Template {
 	return &Template{
-		templates: template,
+		templates: template.Must(template.ParseGlob(path)),
 	}
 }
 

@@ -4,6 +4,7 @@ if [ $# -eq 0 ]; then
     echo "Usage: ./request.sh <command> <arg>"
     echo "Examples:"
     echo "- ./request.sh index - calls the index endpoint which returns the homepage"
+    echo "- ./request.sh stats - calls the stats endpoint which returns the stats page"
     echo "- ./request.sh delete 123 - calls the delete endpoint which removes the deeplink association"
     echo "- ./request.sh details 123 - calls the details endpoint which returns details about the deeplink"
     echo "- ./request.sh unhandled - calls a endpoint which is not implemented"
@@ -15,6 +16,9 @@ homeAddr="http://0.0.0.0:9000"
 case "$1" in
     "index")
 	curl -X GET $homeAddr/
+	;;
+    "stats")
+        curl -X GET $homeAddr/stats
 	;;
     "create")
         curl -X POST $homeAddr/create

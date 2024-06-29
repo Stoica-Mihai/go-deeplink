@@ -1,8 +1,6 @@
 package router
 
 import (
-	"html/template"
-
 	"github.com/labstack/echo/v4"
 )
 
@@ -15,14 +13,15 @@ func GetRouter() *echo.Echo {
 	router := echo.New()
 	router.HideBanner = true
 
-	t := NewTemplate(template.Must(template.ParseGlob(VIEWSPATH + "*.html")))
+	t := NewTemplate(VIEWSPATH + "*.html")
 
 	router.Renderer = t
 
-	router.GET("/", GetIndexHandler)
-	router.GET("/stats", GetStatsHandler)
-
 	router.Static("/static", STATICPATH)
+
+	router.GET("/", GetIndexHandler)
+
+	router.GET("/stats", GetStatsHandler)
 
 	router.POST("/create", CreateLinkHandler)
 

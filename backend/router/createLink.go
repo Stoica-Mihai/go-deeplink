@@ -1,7 +1,7 @@
 package router
 
 import (
-	"go-deeplink/backend/utils"
+	"math/rand"
 	"net/http"
 	"net/url"
 	"strings"
@@ -10,17 +10,22 @@ import (
 	"golang.org/x/net/publicsuffix"
 )
 
+const (
+	CHARSET         = "abcdefghijklmnopqrstuvwxyz-_+0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+	CHARSETLEN      = len(CHARSET)
+	DEEPLINKSIZE    = 15
+	JSONCONTENTTYPE = "application/json"
+)
+
 type CreateLinkResponse struct {
-	Deeplink utils.Deeplink `json:"deeplink"`
-	Redirect string         `json:"redirect"`
+	Deeplink string `json:"deeplink"`
+	Redirect string `json:"redirect"`
 }
 
 type CreateLinkError struct {
 	Status  int    `json:"status"`
 	Message string `json:"message"`
 }
-
-const JSONCONTENTTYPE = "application/json"
 
 func CreateLinkHandler(c echo.Context) error {
 
@@ -47,7 +52,7 @@ func CreateLinkHandler(c echo.Context) error {
 		})
 	}
 
-	createLinkResponse.Deeplink = utils.GenerateDeepLink()
+	createLinkResponse.Deeplink = generateDeepLink()
 
 	return c.JSON(http.StatusOK, createLinkResponse)
 }
@@ -70,4 +75,16 @@ func isValidURL(urlStr string) bool {
 	}
 
 	return true
+}
+
+func generateDeepLink() string {
+
+	var result string
+
+	for DEEPLINKSIZE != len(result) {
+		index := rand.Intn(CHARSETLEN)
+		result += string(CHARSET[index])
+	}
+
+	return result
 }
