@@ -43,6 +43,6 @@ func (s *Service) Run(logging bool) {
 
 func LoggingMiddleware() echo.MiddlewareFunc {
 	return middleware.LoggerWithConfig(middleware.LoggerConfig{
-		Format: "${time_rfc3339} [${method}] ${uri} ${status}\n",
+		Format: "${time_rfc3339} [${method}] ${uri} ${status} ${error}\n",
 	})
 }
