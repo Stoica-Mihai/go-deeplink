@@ -18,5 +18,7 @@ ENV PATH=$PATH:/usr/local/go/bin
 # Set working dir
 WORKDIR /app
 
-# Install GO dependecies
-# RUN go mod download
+COPY ../ /app
+
+# Install dependencies
+RUN go mod download
